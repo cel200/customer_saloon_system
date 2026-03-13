@@ -13,6 +13,7 @@ export default function SetPasswordPage() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const [ready, setReady] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -27,7 +28,10 @@ export default function SetPasswordPage() {
         }
         if (!pendingSignup.mobileOtpVerified) {
             router.push('/verify-mobile-otp');
+            return;
         }
+        // All checks passed — safe to show the form
+        setReady(true);
     }, [router]);
 
     const handleSetPassword = async (e) => {
@@ -88,36 +92,40 @@ export default function SetPasswordPage() {
         <div className={styles.page}>
             <Navbar />
             <div className={`container ${styles.container}`}>
-                <div className={styles.card}>
-                    <h2>Set Password</h2>
-                    {error && <p className={styles.error}>{error}</p>}
+                {!ready ? (
+                    <div style={{ textAlign: 'center', padding: '4rem' }}>Loading...</div>
+                ) : (
+                    <div className={styles.card}>
+                        <h2>Set Password</h2>
+                        {error && <p className={styles.error}>{error}</p>}
 
-                    <form onSubmit={handleSetPassword}>
-                        <div className="form-group">
-                            <label>Password</label>
-                            <input
-                                type="password"
-                                placeholder="Create a password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </div>
+                        <form onSubmit={handleSetPassword}>
+                            <div className="form-group">
+                                <label>Password</label>
+                                <input
+                                    type="password"
+                                    placeholder="Create a password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </div>
 
-                        <div className="form-group">
-                            <label>Confirm Password</label>
-                            <input
-                                type="password"
-                                placeholder="Confirm password"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                            />
-                        </div>
+                            <div className="form-group">
+                                <label>Confirm Password</label>
+                                <input
+                                    type="password"
+                                    placeholder="Confirm password"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                />
+                            </div>
 
-                        <button className="btn btn-primary" type="submit" style={{ width: '100%' }}>
-                            Create Account
-                        </button>
-                    </form>
-                </div>
+                            <button className="btn btn-primary" type="submit" style={{ width: '100%' }}>
+                                Create Account
+                            </button>
+                        </form>
+                    </div>
+                )}
             </div>
         </div>
     );
