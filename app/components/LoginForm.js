@@ -46,7 +46,7 @@ export default function LoginForm({ redirect = '/' }) {
 
                 await Promise.all([
                     store.dispatch(sendOtpEmail({ email: credentials.email })).unwrap(),
-                    store.dispatch(sendOtpMobile({ phone: credentials.mobile })).unwrap(),
+                    store.dispatch(sendOtpMobile({ phone: credentials.mobile,portal:"user" })).unwrap(),
                 ]);
 
                 const pendingSignup = {
