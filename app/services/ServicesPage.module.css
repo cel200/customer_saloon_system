@@ -1,0 +1,78 @@
+.pageWrap {
+  padding-bottom: 4rem;
+}
+
+.section {
+  padding: 2.25rem 1rem 0;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  margin-bottom: 0;
+}
+
+.filtersWrap {
+  margin-bottom: 2.25rem;
+}
+
+.filterRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.filterRow + .filterRow {
+  margin-top: 0.95rem;
+}
+
+.audienceChip,
+.categoryChip {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--foreground);
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 0.5rem 1.15rem;
+  line-height: 1.1;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.audienceChipActive {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #000;
+}
+
+.categoryChipActive {
+  border-color: #4f63b8;
+  background: rgba(50, 74, 162, 0.25);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding-top: 1.6rem;
+  }
+
+  .headerRow {
+    margin-bottom: 1.2rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.7rem;
+  }
+}
