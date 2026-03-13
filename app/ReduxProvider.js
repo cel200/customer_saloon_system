@@ -33,7 +33,7 @@ function AuthBootstrap({ children }) {
 
   useEffect(() => {
     // List of public routes
-    const publicRoutes = ['/login', '/signup', '/verify-otp', '/verify-email-otp', '/verify-mobile-otp'];
+    const publicRoutes = ['/login', '/signup', '/verify-otp', '/verify-email-otp', '/verify-mobile-otp', '/set-password'];
 
     if (!loading) {
       if (!user?.token && !publicRoutes.includes(pathname)) {
