@@ -51,7 +51,7 @@ export default function VerifyMobileOtpPage() {
         }
 
         try {
-            await store.dispatch(verifyOtpMobile({ phone: pendingSignup.mobile, code:otp })).unwrap();
+            await store.dispatch(verifyOtpMobile({ phone: pendingSignup.mobile, code:otp,portal:"user" })).unwrap();
             pendingSignup.mobileOtpVerified = true;
             sessionStorage.setItem('pendingSignup', JSON.stringify(pendingSignup));
             router.push('/set-password');
