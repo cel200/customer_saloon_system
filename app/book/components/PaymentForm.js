@@ -89,7 +89,7 @@ export default function PaymentForm({
   // ── Helpers ─────────────────────────────────────────────────────────────────
 
   const createIntent = async () => {
-    const res = await fetch(`${apiBase}/admin/create-payment-intent`, {
+    const res = await fetch(`${apiBase}admin/create-payment-intent`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ amount, ...bookingData }),
