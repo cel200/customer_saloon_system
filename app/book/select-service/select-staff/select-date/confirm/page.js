@@ -58,6 +58,10 @@ export default function ConfirmPage() {
             staff: selectedStaffId,
             appointmentDate: selectedDate,
             timeSlot: selectedSlot,
+            paymentStatus: "Completed",
+            status: "Completed",
+            paymentType: "online",
+            bookingType: "online",
         }));
 
         setPaymentStatus('success');
@@ -76,6 +80,10 @@ export default function ConfirmPage() {
         staff: selectedStaff?._id || selectedStaff?.id || null,
         appointmentDate: selectedDate,
         timeSlot: selectedSlot,
+        paymentStatus: "Completed",
+        status: "Completed",
+        paymentType: "online",
+        bookingType: "online",
     };
 
     if (!selectedService || !selectedSlot) return null;

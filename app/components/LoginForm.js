@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styles from '../login/Login.module.css';
 import { useRouter } from 'next/navigation';
 import { store } from '@/store/store';
-import { loginUser, sendOtpEmail, sendOtpMobile } from '@/store/userThunk';
+import { loginUser, sendOtpMobile } from '@/store/userThunk';
 import Cookies from 'js-cookie';
 
 export default function LoginForm({ redirect = '/' }) {
@@ -44,22 +44,19 @@ export default function LoginForm({ redirect = '/' }) {
                     return;
                 }
 
-                await Promise.all([
-                    store.dispatch(sendOtpEmail({ email: credentials.email })).unwrap(),
-                    store.dispatch(sendOtpMobile({ phone: credentials.mobile,portal:"user" })).unwrap(),
-                ]);
+                await store.dispatch(sendOtpMobile({ phone: credentials.mobile, portal: "user" })).unwrap();
 
                 const pendingSignup = {
                     name: credentials.name,
                     email: credentials.email,
                     mobile: credentials.mobile,
-                    emailOtpVerified: false,
+                    emailOtpVerified: true,
                     mobileOtpVerified: false,
                     redirect: targetRedirect,
                 };
 
                 sessionStorage.setItem('pendingSignup', JSON.stringify(pendingSignup));
-                router.push('/verify-email-otp');
+                router.push('/verify-mobile-otp');
             }
         } catch (err) {
             setError(typeof err === 'string' ? err : err?.message || 'Something went wrong');

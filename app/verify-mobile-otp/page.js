@@ -19,10 +19,6 @@ export default function VerifyMobileOtpPage() {
             router.push('/login');
             return;
         }
-        if (!pendingSignup.emailOtpVerified) {
-            router.push('/verify-email-otp');
-            return;
-        }
         if (pendingSignup.mobileOtpVerified) {
             router.push('/set-password');
             return;
@@ -40,10 +36,7 @@ export default function VerifyMobileOtpPage() {
             return;
         }
 
-        if (!pendingSignup.emailOtpVerified) {
-            router.push('/verify-email-otp');
-            return;
-        }
+
 
         if (!otp) {
             setError('Please enter mobile OTP');

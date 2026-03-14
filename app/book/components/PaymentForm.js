@@ -84,18 +84,23 @@ export default function PaymentForm({
   const [upiId, setUpiId] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [cardComplete, setCardComplete] = useState(false);
   const [upiStatus, setUpiStatus] = useState(""); // "" | "pending" | "success" | "failed"
 
   // ── Helpers ─────────────────────────────────────────────────────────────────
 
   const createIntent = async () => {
-    const res = await fetch(`${apiBase}admin/create-payment-intent`, {
+    // Ensure apiBase has a trailing slash and path starts correctly
+    const baseUrl = apiBase.endsWith('/') ? apiBase : `${apiBase}/`;
+    const res = await fetch(`${baseUrl}admin/create-payment-intent`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ amount, ...bookingData }),
     });
     if (!res.ok) throw new Error("Failed to create payment intent.");
-    return res.json(); // { clientSecret }
+    const json = await res.json();
+    // Handle both { clientSecret } and { data: { clientSecret } }
+    return json?.data?.clientSecret ? json.data : json;
   };
 
   // ── Card Submit ──────────────────────────────────────────────────────────────
@@ -103,6 +108,11 @@ export default function PaymentForm({
   const handleCardSubmit = async (e) => {
     e.preventDefault();
     if (!stripe || !elements) return;
+
+    if (!cardComplete) {
+      setError("Please complete your card details.");
+      return;
+    }
 
     setLoading(true);
     setError("");
@@ -210,7 +220,7 @@ export default function PaymentForm({
       </div>
 
       {/* ── Card Form ───────────────────────────────────────────────────────── */}
-      {method === "card" && (
+      <div style={{ display: method === "card" ? "block" : "none" }}>
         <form onSubmit={handleCardSubmit} style={{ width: "100%" }}>
           <div
             style={{
@@ -221,23 +231,34 @@ export default function PaymentForm({
               marginBottom: error ? "0.6rem" : "1.4rem",
             }}
           >
-            <CardElement options={CARD_ELEMENT_OPTIONS} />
+            <CardElement 
+              options={CARD_ELEMENT_OPTIONS} 
+              onChange={(e) => {
+                setCardComplete(e.complete);
+                if (e.error) setError(e.error.message);
+                else setError("");
+              }}
+            />
           </div>
 
-          {error && (
+          {error && method === "card" && (
             <p style={{ color: "#fa755a", fontSize: "0.85rem", marginBottom: "1rem" }}>
               {error}
             </p>
           )}
 
-          <button type="submit" disabled={!stripe || loading} style={payBtnStyle(loading)}>
+          <button 
+            type="submit" 
+            disabled={!stripe || loading || !cardComplete} 
+            style={payBtnStyle(loading || !cardComplete)}
+          >
             {loading ? "Processing…" : `Pay ₹${(amount / 100).toFixed(0)}`}
           </button>
         </form>
-      )}
+      </div>
 
       {/* ── UPI Form ────────────────────────────────────────────────────────── */}
-      {method === "upi" && (
+      <div style={{ display: method === "upi" ? "block" : "none" }}>
         <form onSubmit={handleUpiSubmit} style={{ width: "100%" }}>
           <label
             style={{
@@ -258,7 +279,7 @@ export default function PaymentForm({
             autoComplete="off"
           />
 
-          {error && (
+          {error && method === "upi" && (
             <p style={{ color: "#fa755a", fontSize: "0.85rem", marginBottom: "0.8rem" }}>
               {error}
             </p>
@@ -311,7 +332,7 @@ export default function PaymentForm({
             Supported: Google Pay, PhonePe, Paytm, BHIM &amp; all UPI apps
           </p>
         </form>
-      )}
+      </div>
     </div>
   );
 }

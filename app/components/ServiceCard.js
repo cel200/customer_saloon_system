@@ -43,9 +43,11 @@ const ServiceCard = ({ selectedAudience, selectedCategoryId }) => {
     }
   };
 
+  const services = listServicesData?.data || (Array.isArray(listServicesData) ? listServicesData : []);
+
   return (
     <>
-      {listServicesData?.data?.map((service) => (
+      {services?.map((service) => (
         <div className={styles.card} key={service._id}>
           <div
             className={styles.image}

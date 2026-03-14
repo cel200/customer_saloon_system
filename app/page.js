@@ -63,8 +63,12 @@ export default function Home() {
     }
   }, [loading, user, router]);
 
-  if (loading || !user?.token) {
+  if (loading) {
     return <div className="container" style={{ padding: '4rem', textAlign: 'center' }}>Loading...</div>;
+  }
+
+  if (!user?.token) {
+    return null;
   }
 
   return (

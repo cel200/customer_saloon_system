@@ -63,7 +63,7 @@ export default function StepService({
               </p>
             </div>
             <div className={styles.priceTag}>
-              ${service.price}
+              {service.price}Rs
             </div>
           </div>
         ))}
