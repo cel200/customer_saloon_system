@@ -37,15 +37,15 @@ export default function DashboardPage() {
     // }, [dispatch, user]);
 
     // const appointments = getAppointmentHistoryData?.data || [];
-    useEffect(() => {
-        if (user) {
-            const userId = Cookies.get("userId")
-            dispatch(getAppointmentHistory({userId:userId}));
+  useEffect(() => {
+    // if (user) {
+        const userId = Cookies.get("userId");
+        console.log("userId",userId)
+        dispatch(getAppointmentHistory({ id:userId }));
 
-            // join socket room
-            socket.emit("joinUserRoom", user.id);
-        }
-    }, [dispatch, user]);
+    //     socket.emit("joinUserRoom", userId);
+    // }
+}, [dispatch]);
 
     // useEffect(() => {
     //     socket.on("connect", () => {

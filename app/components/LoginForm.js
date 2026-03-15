@@ -34,7 +34,7 @@ export default function LoginForm({ redirect = '/' }) {
                 const userData = response?.user || response?.data || response;
                 console.log("userData", userData)
                 Cookies.set("userToken", userData?.token)
-                Cookies.set("userId", userData?._id || userData?.id)
+                Cookies.set("userId", userData?.id || userData?.id)
                 if (userData) {
                     router.push(targetRedirect);
                 }

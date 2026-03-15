@@ -103,7 +103,7 @@ export const bookAppointment = createAsyncThunk(
 export const getAppointmentHistory = createAsyncThunk(
   "auth/get-appointment",
   async (data) => {
-    const res = await api.get("/admin/get-appointment", data);
+    const res = await api.post("/admin/get-appointment", data);
     return res.data;
   }
 );
