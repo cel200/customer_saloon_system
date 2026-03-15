@@ -39,7 +39,8 @@ export default function DashboardPage() {
     // const appointments = getAppointmentHistoryData?.data || [];
     useEffect(() => {
         if (user) {
-            dispatch(getAppointmentHistory());
+            const userId = Cookies.get("userId")
+            dispatch(getAppointmentHistory({userId:userId}));
 
             // join socket room
             socket.emit("joinUserRoom", user.id);
