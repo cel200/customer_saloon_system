@@ -377,7 +377,16 @@ export default function BookingFlow({ currentStep = 'service' }) {
                         selectedDate={selectedDate}
                         selectedSlot={selectedSlot}
                         paymentStatus={paymentStatus}
-                        handlePayment={handlePayment}
+                        onPaymentSuccess={handlePayment}
+                        onPaymentError={() => setPaymentStatus('error')}
+                        bookingData={{
+                            user: user?._id || user?.id || Cookies.get("userId"),
+                            service: selectedService?._id || selectedService?.id,
+                            section: selectedCategory?.id || null,
+                            staff: selectedStaff?._id || selectedStaff?.id || null,
+                            appointmentDate: selectedDate,
+                            timeSlot: selectedSlot,
+                        }}
                     />
                 )}
 

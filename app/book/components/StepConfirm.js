@@ -78,7 +78,7 @@ export default function StepConfirm({
               marginBottom: '1rem',
             }}
           >
-            Choose your preferred payment method to complete the booking.
+            Please enter your card details to complete the booking.
           </p>
           <PaymentForm
             amount={amountInPaise}
