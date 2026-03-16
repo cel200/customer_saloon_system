@@ -53,7 +53,7 @@ export default function ConfirmPage() {
             try {
 
                 const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/admin/create-payment-intent`,
+                    `${process.env.NEXT_PUBLIC_API_URL}admin/create-payment-intent`,
                     {
                         method: "POST",
                         headers: {
