@@ -6,9 +6,9 @@ import Link from 'next/link';
 import ServiceCard from './components/ServiceCard';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { listSectionByGender } from '@/store/userThunk';
+import { getFeaturedServices, listSectionByGender } from '@/store/userThunk';
 import { useRouter } from 'next/navigation';
-
+import styles from "../app/components/ServiceCard.module.css"
 export default function Home() {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -19,7 +19,7 @@ export default function Home() {
   const { listSectionByGenderData } = useSelector(
     (state) => state.listSectionByGender,
   );
-
+const {getFeaturedServicesData} = useSelector((state)=>state.getFeaturedServices)
   const audienceButtons = useMemo(
     () => [
       { id: 'Men', label: 'Men' },
@@ -33,6 +33,7 @@ export default function Home() {
     if (user?.token) {
       dispatch(listSectionByGender({ gender: selectedAudience }));
     }
+    
   }, [dispatch, selectedAudience, user]);
 
   useEffect(() => {
@@ -62,7 +63,9 @@ export default function Home() {
       router.push('/login');
     }
   }, [loading, user, router]);
-
+    useEffect(()=>{
+    dispatch(getFeaturedServices())
+  },[])
   if (loading) {
     return <div className="container" style={{ padding: '4rem', textAlign: 'center' }}>Loading...</div>;
   }
@@ -70,7 +73,8 @@ export default function Home() {
   if (!user?.token) {
     return null;
   }
-
+  
+ 
   return (
     <main>
       <Navbar />
@@ -82,7 +86,7 @@ export default function Home() {
           <Link href="/services" className="btn btn-secondary">View All</Link>
         </div>
 
-        <div style={{ marginBottom: '2rem' }}>
+        {/* <div style={{ marginBottom: '2rem' }}>
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
             {audienceButtons.map((audience) => (
               <button
@@ -123,13 +127,51 @@ export default function Home() {
               </button>
             ))}
           </div>
-        </div>
+        </div> */}
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem' }}>
-          <ServiceCard
+          {/* <ServiceCard
             selectedAudience={selectedAudience}
             selectedCategoryId={selectedCategory?.id}
-          />
+          /> */}
+           {getFeaturedServicesData?.data?.map((service) => (
+        <div className={styles.card} key={service._id}>
+          <div
+            className={styles.image}
+            style={{
+              backgroundImage: `url(${service?.image})`,
+            }}
+          ></div>
+
+          <div className={styles.content}>
+            <h3>{service?.serviceName}</h3>
+            <p>{service?.description}</p>
+
+            <div className={styles.meta}>
+              <span className={styles.price}>
+                {service?.price}Rs
+              </span>
+              <span className={styles.duration}>
+                {service?.duration} mins
+              </span>
+            </div>
+
+            {/* <Link
+              href="/book?skip=true"
+              onClick={() => handleBookNow(service)}
+              className="btn btn-primary"
+              style={{
+                width: "100%",
+                marginTop: "1rem",
+                display: "block",
+                textAlign: "center",
+              }}
+            >
+              Book Now
+            </Link> */}
+          </div>
+        </div>
+      ))}
         </div>
       </section>
 

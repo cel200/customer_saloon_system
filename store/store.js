@@ -5,6 +5,7 @@ import {
   bookAppointmentReducer,
   getAppointmentAvailabilityReducer,
   getAppointmentHistoryReducer,
+  getFeaturedServicesReducer,
   getNotificationForAdminReducer,
   listSectionByGenderReducer,
   listServicesReducer,
@@ -32,6 +33,7 @@ export const store = configureStore({
     bookAppointment:bookAppointmentReducer,
     getAppointmentHistory:getAppointmentHistoryReducer,
     getAppointmentAvailability:getAppointmentAvailabilityReducer,
-    getNotificationForAdmin:getNotificationForAdminReducer
+    getNotificationForAdmin:getNotificationForAdminReducer,
+    getFeaturedServices:getFeaturedServicesReducer
   }
 });

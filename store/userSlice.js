@@ -1,5 +1,5 @@
 const { createSlice } = require('@reduxjs/toolkit');
-const { loginUser, registerUser, sendOtpEmail, verifyOtpEmail, sendOtpMobile, verifyOtpMobile, listServices, listSectionByGender, listStaffs, bookAppointment, getAppointmentHistory, getAppointmentAvailability, getNotificationForAdmin } = require('./userThunk');
+const { loginUser, registerUser, sendOtpEmail, verifyOtpEmail, sendOtpMobile, verifyOtpMobile, listServices, listSectionByGender, listStaffs, bookAppointment, getAppointmentHistory, getAppointmentAvailability, getNotificationForAdmin, getFeaturedServices } = require('./userThunk');
 const Cookies = require('js-cookie');
 
 const authSlice = createSlice({
@@ -325,6 +325,30 @@ const getNotificationForAdminSlice = createSlice({
       });
   },
 });
+
+const getFeaturedServicesSlice = createSlice({
+  name: "getFeaturedServices",
+  initialState: {
+ getFeaturedServicesData: null,
+ getFeaturedServicesLoading: false,
+   getFeaturedServicesError: null,
+  },
+ 
+  extraReducers: (builder) => {
+    builder
+      .addCase( getFeaturedServices.pending, (state) => {
+        state.getFeaturedServicesLoading = true;
+      })
+      .addCase(getFeaturedServices.fulfilled, (state, action) => {
+        state.getFeaturedServicesLoading = false;
+        state.getFeaturedServicesData = action.payload;
+      })
+      .addCase(getFeaturedServices.rejected, (state, action) => {
+        state.getFeaturedServicesLoading = false;
+        state.getFeaturedServicesError = action.error.message;
+      });
+  },
+});
 export const authReducer = authSlice.reducer;
 export const { hydrateAuth, logout } = authSlice.actions;
 export const registerUserReducer = registerUserSlice.reducer;
@@ -338,4 +362,5 @@ export const listStaffsReducer = listStaffsSlice.reducer;
 export const bookAppointmentReducer = bookAppointmentSlice.reducer;
 export const getAppointmentHistoryReducer = getAppointmentHistorySlice.reducer;
 export const getAppointmentAvailabilityReducer = getAppointmentAvailabilitySlice.reducer;
-export const getNotificationForAdminReducer = getNotificationForAdminSlice.reducer
+export const getNotificationForAdminReducer = getNotificationForAdminSlice.reducer;
+export const getFeaturedServicesReducer = getFeaturedServicesSlice.reducer

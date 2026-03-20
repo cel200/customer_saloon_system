@@ -17,6 +17,7 @@ const ServiceCard = ({ selectedAudience, selectedCategoryId }) => {
 
     const payload = {
       gender: selectedAudience,
+      isfeatured:true
     };
 
     if (selectedCategoryId) {

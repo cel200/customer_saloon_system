@@ -22,8 +22,14 @@ function AuthBootstrap({ children }) {
       // If we have a token in cookies but not in state yet, 
       // we can use it, but typically we rely on the object in localStorage
       const token = Cookies.get("userToken");
-      if (token && persistedUser) {
-        persistedUser.token = token;
+      if (token) {
+        if (persistedUser) {
+          persistedUser.token = token;
+        } else {
+          // Minimal user object so auth gating still works after refresh
+          const userId = Cookies.get("userId");
+          persistedUser = { token, id: userId || null };
+        }
       }
     } catch {
       persistedUser = null;
@@ -38,6 +44,8 @@ function AuthBootstrap({ children }) {
     if (!loading) {
       if (!user?.token && !publicRoutes.includes(pathname)) {
         router.replace('/login');
+      } else if (user?.token && publicRoutes.includes(pathname)) {
+        router.replace('/');
       }
     }
   }, [loading, user, pathname, router]);

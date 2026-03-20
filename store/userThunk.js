@@ -121,3 +121,10 @@ export const getNotificationForAdmin = createAsyncThunk(
     return res.data;
   }
 );
+export const getFeaturedServices = createAsyncThunk(
+  "auth/getFeaturedServices",
+  async (data) => {
+    const res = await api.get("/admin/featured-service", data);
+    return res.data;
+  }
+);
