@@ -14,27 +14,11 @@ function AuthBootstrap({ children }) {
   const { user, loading } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    let persistedUser = null;
-    try {
-      const rawUser = window.localStorage.getItem("user");
-      persistedUser = rawUser ? JSON.parse(rawUser) : null;
-
-      // If we have a token in cookies but not in state yet, 
-      // we can use it, but typically we rely on the object in localStorage
-      const token = Cookies.get("userToken");
-      if (token) {
-        if (persistedUser) {
-          persistedUser.token = token;
-        } else {
-          // Minimal user object so auth gating still works after refresh
-          const userId = Cookies.get("userId");
-          persistedUser = { token, id: userId || null };
-        }
-      }
-    } catch {
-      persistedUser = null;
-    }
-    dispatch(hydrateAuth(persistedUser));
+    // Force logout/clear state on fresh load to require login every time
+    localStorage.removeItem("user");
+    Cookies.remove("userToken");
+    Cookies.remove("userId");
+    dispatch(hydrateAuth(null));
   }, [dispatch]);
 
   useEffect(() => {
