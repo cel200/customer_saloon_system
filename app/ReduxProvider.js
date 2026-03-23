@@ -14,10 +14,20 @@ function AuthBootstrap({ children }) {
   const { user, loading } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    // Force logout/clear state on fresh load to require login every time
-    localStorage.removeItem("user");
-    Cookies.remove("userToken");
-    Cookies.remove("userId");
+    try {
+      // We rely only on cookies for session-based persistence
+      const token = Cookies.get("userToken");
+      if (token) {
+        const userId = Cookies.get("userId");
+        const rawUser = window.localStorage.getItem("user"); // We can still try to get metadata if it exists
+        const persistedUser = rawUser ? JSON.parse(rawUser) : { token, id: userId || null };
+        persistedUser.token = token;
+        dispatch(hydrateAuth(persistedUser));
+        return;
+      }
+    } catch {
+      // Ignore
+    }
     dispatch(hydrateAuth(null));
   }, [dispatch]);
 
