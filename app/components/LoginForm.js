@@ -44,19 +44,20 @@ export default function LoginForm({ redirect = '/' }) {
                     return;
                 }
 
-                await store.dispatch(sendOtpMobile({ phone: credentials.mobile, portal: "user" })).unwrap();
+                // Skip OTP sending for Twilio Trial
+                // await store.dispatch(sendOtpMobile({ phone: credentials.mobile, portal: "user" })).unwrap();
 
                 const pendingSignup = {
                     name: credentials.name,
                     email: credentials.email,
                     mobile: credentials.mobile,
                     emailOtpVerified: true,
-                    mobileOtpVerified: false,
+                    mobileOtpVerified: true,
                     redirect: targetRedirect,
                 };
 
                 sessionStorage.setItem('pendingSignup', JSON.stringify(pendingSignup));
-                router.push('/verify-mobile-otp');
+                router.push('/set-password');
             }
         } catch (err) {
             setError(typeof err === 'string' ? err : err?.message || 'Something went wrong');

@@ -2,10 +2,18 @@
 
 import { useState, useRef, useEffect } from "react";
 import styles from "./ChatBot.module.css";
+import { useSelector } from "react-redux";
 
 export default function ChatBot() {
+  const user = useSelector((state) => state.auth.user);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    setIsLoggedIn(!!user);
+  }, [user]);
+
   const [messages, setMessages] = useState([
     { role: "bot", content: "Hello! I'm your Luxe Salon assistant. How can I help you with your enquiries today?" }
   ]);
@@ -53,6 +61,8 @@ export default function ChatBot() {
       setIsLoading(false);
     }
   };
+
+  if (!isLoggedIn) return null;
 
   return (
     <div className={styles.chatContainer}>
